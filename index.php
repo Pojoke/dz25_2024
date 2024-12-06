@@ -1,29 +1,35 @@
 <?php
 
-$user_form = "
-<form action='" . $_SERVER['PHP_SELF'] . "' method='post' name='autoForm'>
-  <label>Месяц:</label>
-  <input type='text' name='month'>
-  <br>
-  <label>Год:</label>
-  <input type='text' name='year'>
-  <br>
-  <label>День:</label>
-  <input type='text' name='day'>
-  <br>
-  <button value='submit' name='submit' type='submit'>Отправить</button>
-</form>";
+$months = [
+    1 => "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня",
+    "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"
+];
 
-echo $user_form;
 
-if (isset($_POST["submit"])) {
-    $month = $_POST['month'];
-    $day = $_POST['day'];
-    $year = $_POST['year'];
+$students = [
+    ["name" => "Иван", "birthdate" => mktime(0, 0, 0, 1, 15, 2000)],
+    ["name" => "Ольга", "birthdate" => strtotime("04/20/1998")],
+    ["name" => "Петр", "birthdate" => mktime(0, 0, 0, 7, 5, 2001)],
+    ["name" => "Анна", "birthdate" => strtotime("10/30/1999")]
+];
 
-    if (!checkdate($month, $day, $year)) {
-        echo "Дата народження не коректна";
-    } else {
-        echo "Вітаю, ви ввели правильну дату";
+foreach ($students as $student) {
+    $birthInfo = getdate($student['birthdate']);
+    
+    $day = $birthInfo['mday'];
+    $month = $months[$birthInfo['mon']];
+    $year = $birthInfo['year'];
+    
+    
+    $currentYear = date("Y");
+    $age = $currentYear - $year;
+    if (date("n") < $birthInfo['mon'] || 
+        (date("n") == $birthInfo['mon'] && date("j") < $birthInfo['mday'])) {
+        $age--; // Корректируем возраст, если день рождения ещё не наступил
     }
+
+    echo "Имя: {$student['name']}<br>";
+    echo "Дата рождения: {$day} {$month} {$year}<br>";
+    echo "Возраст: {$age} лет<br><br>";
 }
+?>
