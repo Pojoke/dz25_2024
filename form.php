@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="process_birthday.php" method="post">
+    <form action="form.php" method="post">
     <label for="day">День:</label>
         <input type="number" id="day" name="day" min="1" max="31" required>
         <br>
